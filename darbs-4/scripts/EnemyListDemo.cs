@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 public partial class EnemyListDemo : Node
 {
-	private List<Enemy> enemies = new()
+	private List<string> enemies = new()
 	{
-		new Enemy("Pirmais"),
-		new Enemy("Otrais"),
-		new Enemy("Trešais"),
-		new Enemy("Ceturtais")
+		"Pirmais",
+		"Otrais",
+		"Trešais",
+		"Ceturtais"
 	};
 
 	public override void _Ready()
@@ -38,12 +38,12 @@ public partial class EnemyListDemo : Node
 			GD.Print($"Indekss {index} nav derīgs; skaits: {enemies.Count}");
 		}
 
-		List<Enemy> unsafeEnemies = new(enemies);
+		List<string> unsafeEnemies = new(enemies);
 		try
 		{
-			foreach (Enemy enemy in unsafeEnemies)
+			foreach (string enemy in unsafeEnemies)
 			{
-				if (enemy.Name == "Trešais")
+				if (enemy == "Trešais")
 				{
 					unsafeEnemies.Remove(enemy);
 				}
@@ -54,25 +54,25 @@ public partial class EnemyListDemo : Node
 			GD.Print("Tieša dzēšana foreach ciklā izraisa InvalidOperationException.");
 		}
 
-		List<Enemy> enemiesToRemove = new();
-		foreach (Enemy enemy in enemies)
+		List<string> enemiesToRemove = new();
+		foreach (string enemy in enemies)
 		{
-			if (enemy.Name == "Trešais")
+			if (enemy == "Trešais")
 			{
 				enemiesToRemove.Add(enemy);
 			}
 		}
 
-		foreach (Enemy enemy in enemiesToRemove)
+		foreach (string enemy in enemiesToRemove)
 		{
 			enemies.Remove(enemy);
 		}
 
 		GD.Print($"Ienaidnieku skaits: {enemies.Count}");
 
-		foreach (Enemy enemy in enemies)
+		foreach (string enemy in enemies)
 		{
-			GD.Print(enemy.Name);
+			GD.Print(enemy);
 		}
 	}
 }
