@@ -14,7 +14,7 @@ public partial class Enemy : CharacterBody2D
 	public string EnemyName = "Pretinieks";
 	[Export] public float Speed = 150.0f;
 	[Export] public int Hp = 30;
-	[Export] public bool UsePathfinding = false;
+	[Export] public bool UsePathfinding = true;
 
 	protected EnemyState state = EnemyState.Patrol;
 	protected Node2D player;

@@ -41,7 +41,7 @@ position = Vector2(-27, -119)
 polygon = PackedVector2Array(-20, -130, 20, -130, 20, 130, -20, 130)
 
 [node name="Player" parent="." unique_id=1812156753 instance=ExtResource("1_rarb2")]
-position = Vector2(523, 577)
+position = Vector2(243, 514)
 
 [node name="Enemy" parent="." unique_id=464605874 instance=ExtResource("2_u3rsd")]
-position = Vector2(855, 600)
+position = Vector2(1077, 474)
