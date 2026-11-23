@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="darbs 4"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="uid://438mo58wfjqw"
 config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 

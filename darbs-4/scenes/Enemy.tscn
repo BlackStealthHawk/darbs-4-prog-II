@@ -16,3 +16,5 @@ shape = SubResource("RectangleShape2D_xvo5p")
 position = Vector2(99, 62)
 color = Color(1, 0.21960784, 0.08235294, 1)
 polygon = PackedVector2Array(-14, -14, 14, -14, 14, 14, -14, 14)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=578966278]

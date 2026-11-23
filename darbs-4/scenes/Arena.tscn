@@ -1,4 +1,45 @@
 [gd_scene format=3 uid="uid://438mo58wfjqw"]
 
+[ext_resource type="PackedScene" uid="uid://my883h1pplsg" path="res://scenes/Player.tscn" id="1_rarb2"]
+[ext_resource type="PackedScene" uid="uid://bims0hp4fl4f4" path="res://scenes/Enemy.tscn" id="2_u3rsd"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_gcrh0"]
+vertices = PackedVector2Array(453.75, 279, 717.9375, 363, -509, 363.9922, 394.25, 279, 714.0469, -295.9922, 453.75, 1, -509, -295, 394.25, 1, -357, -228, -357, 50, -416.5, -228, -416.5, 50)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 1, 0, 5), PackedInt32Array(6, 4, 5, 7, 8), PackedInt32Array(9, 8, 7, 3), PackedInt32Array(6, 8, 10), PackedInt32Array(2, 6, 10, 11), PackedInt32Array(3, 2, 11, 9)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-519, -305, 724, -306, 728, 373, -519, 374)])
+parsed_geometry_type = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xvo5p"]
+size = Vector2(39.5, 258)
+
 [node name="Arena" type="Node2D" unique_id=717631553]
 position = Vector2(539, 326)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=875623873]
+navigation_polygon = SubResource("NavigationPolygon_gcrh0")
+
+[node name="Wall1" type="StaticBody2D" parent="NavigationRegion2D" unique_id=2032022408]
+position = Vector2(450, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Wall1" unique_id=1429011749]
+position = Vector2(-836.75, -349)
+shape = SubResource("RectangleShape2D_xvo5p")
+
+[node name="Polygon2D" type="Polygon2D" parent="NavigationRegion2D/Wall1" unique_id=311166759]
+position = Vector2(-837, -349)
+polygon = PackedVector2Array(-20, -130, 20, -130, 20, 130, -20, 130)
+
+[node name="Wall2" type="StaticBody2D" parent="NavigationRegion2D" unique_id=859789276]
+position = Vector2(450, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Wall2" unique_id=664719619]
+position = Vector2(-26, -120)
+shape = SubResource("RectangleShape2D_xvo5p")
+
+[node name="Polygon2D" type="Polygon2D" parent="NavigationRegion2D/Wall2" unique_id=148500560]
+position = Vector2(-27, -119)
+polygon = PackedVector2Array(-20, -130, 20, -130, 20, 130, -20, 130)
+
+[node name="Player" parent="." unique_id=1812156753 instance=ExtResource("1_rarb2")]
+
+[node name="Enemy" parent="." unique_id=464605874 instance=ExtResource("2_u3rsd")]

@@ -12,18 +12,20 @@ public enum EnemyState
 public partial class Enemy : CharacterBody2D
 {
 	public string EnemyName = "Pretinieks";
-	[Export] public float Speed = 140.0f;
+	[Export] public float Speed = 150.0f;
 	[Export] public int Hp = 30;
+	[Export] public bool UsePathfinding = true;
 
 	protected EnemyState state = EnemyState.Patrol;
 	protected Node2D player;
+	protected NavigationAgent2D navAgent;
 
 	public bool IsAlive => state != EnemyState.Dead;
 
 	public override void _Ready()
 	{
 		player = GetParent()?.GetNodeOrNull<Node2D>("Player");
-		GD.Print("Sākuma stāvoklis: ", state);
+		navAgent = GetNodeOrNull<NavigationAgent2D>("NavigationAgent2D");
 	}
 
 	protected void ChangeState(EnemyState newState)
@@ -33,11 +35,28 @@ public partial class Enemy : CharacterBody2D
 		state = newState;
 	}
 
+	protected void ChasePlayer()
+	{
+		Vector2 dir;
+		if (UsePathfinding && navAgent != null)
+		{
+			navAgent.TargetPosition = player.GlobalPosition;
+			Vector2 nextPos = navAgent.GetNextPathPosition();
+			dir = (nextPos - GlobalPosition).Normalized();
+		}
+		else
+		{
+			dir = (player.GlobalPosition - GlobalPosition).Normalized();
+		}
+
+		Velocity = dir * Speed;
+		MoveAndSlide();
+	}
+
 	public void TakeDamage(int amount)
 	{
 		if (!IsAlive || amount <= 0) return;
 		Hp -= amount;
-		GD.Print("Ienaidnieks saņēma ", amount, " bojājumus. HP: ", Hp);
 		if (Hp <= 0)
 		{
 			Hp = 0;
@@ -61,16 +80,13 @@ public partial class Enemy : CharacterBody2D
 			case EnemyState.Idle:
 			case EnemyState.Patrol:
 				Velocity = Vector2.Zero;
-				if (dist < 300.0f) ChangeState(EnemyState.Chase);
+				if (dist < 600.0f) ChangeState(EnemyState.Chase);
 				break;
 
 			case EnemyState.Chase:
-				Vector2 dir = (player.GlobalPosition - GlobalPosition).Normalized();
-				Velocity = dir * Speed;
-				MoveAndSlide();
-
+				ChasePlayer();
 				if (dist < 60.0f) ChangeState(EnemyState.Attack);
-				else if (dist > 400.0f) ChangeState(EnemyState.Patrol);
+				else if (dist > 700.0f) ChangeState(EnemyState.Patrol);
 				break;
 
 			case EnemyState.Attack:
@@ -79,7 +95,7 @@ public partial class Enemy : CharacterBody2D
 				break;
 
 			case EnemyState.Dead:
-				break; // Gala stāvoklis — izejošu pāreju nav.
+				break;
 		}
 	}
 }
