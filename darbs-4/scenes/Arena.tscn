@@ -13,9 +13,9 @@ parsed_geometry_type = 1
 size = Vector2(39.5, 258)
 
 [node name="Arena" type="Node2D" unique_id=717631553]
-position = Vector2(539, 326)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=875623873]
+position = Vector2(545, 318)
 navigation_polygon = SubResource("NavigationPolygon_gcrh0")
 
 [node name="Wall1" type="StaticBody2D" parent="NavigationRegion2D" unique_id=2032022408]
@@ -41,5 +41,7 @@ position = Vector2(-27, -119)
 polygon = PackedVector2Array(-20, -130, 20, -130, 20, 130, -20, 130)
 
 [node name="Player" parent="." unique_id=1812156753 instance=ExtResource("1_rarb2")]
+position = Vector2(523, 577)
 
 [node name="Enemy" parent="." unique_id=464605874 instance=ExtResource("2_u3rsd")]
+position = Vector2(855, 600)

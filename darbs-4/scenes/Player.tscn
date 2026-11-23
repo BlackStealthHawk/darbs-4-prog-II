@@ -10,9 +10,9 @@ position = Vector2(27, 24)
 motion_mode = 1
 script = ExtResource("1_p0vlq")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=715711659]
+[node name="player" type="CollisionShape2D" parent="." unique_id=715711659]
 shape = SubResource("RectangleShape2D_xvo5p")
 
-[node name="Polygon2D" type="Polygon2D" parent="CollisionShape2D" unique_id=2093416771]
+[node name="visual" type="Polygon2D" parent="player" unique_id=2093416771]
 color = Color(0.03529412, 0.28235295, 1, 1)
 polygon = PackedVector2Array(-14, -14, 14, -14, 14, 14, -14, 14)
