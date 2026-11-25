@@ -8,6 +8,8 @@ public partial class Bullet : Area2D
 
 	private Vector2 direction = Vector2.Right;
 	private float lifetime;
+	private int activeDamage;
+	private bool targetsPlayer;
 	public bool IsActive { get; private set; }
 	public bool UsePool { get; private set; }
 
@@ -29,13 +31,15 @@ public partial class Bullet : Area2D
 		}
 	}
 
-	public void Fire(Vector2 startPosition, Vector2 moveDirection, bool fromPool)
+	public void Fire(Vector2 startPosition, Vector2 moveDirection, bool fromPool, bool hitPlayer = false, int damage = -1)
 	{
 		GlobalPosition = startPosition;
 		direction = moveDirection.Normalized();
 		Rotation = direction.Angle();
 		lifetime = MaxLifetime;
 		UsePool = fromPool;
+		targetsPlayer = hitPlayer;
+		activeDamage = damage > 0 ? damage : Damage;
 		SetActiveState(true);
 	}
 
@@ -54,13 +58,35 @@ public partial class Bullet : Area2D
 
 	private void OnBodyEntered(Node2D body)
 	{
-		if (!IsActive || body is Player) return;
+		if (!IsActive) return;
+
+		if (targetsPlayer)
+		{
+			if (body is Player player)
+			{
+				player.TakeDamage(activeDamage);
+				FinishBullet();
+			}
+			else if (body is not Enemy)
+			{
+				FinishBullet();
+			}
+
+			return;
+		}
+
+		if (body is Player) return;
 
 		if (body is Enemy enemy)
 		{
-			enemy.TakeDamage(Damage);
+			enemy.TakeDamage(activeDamage);
 		}
 
+		FinishBullet();
+	}
+
+	private void FinishBullet()
+	{
 		if (UsePool) Deactivate();
 		else QueueFree();
 	}

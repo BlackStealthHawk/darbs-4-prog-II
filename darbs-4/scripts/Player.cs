@@ -3,7 +3,9 @@ using Godot;
 public partial class Player : CharacterBody2D
 {
 	[Export] public float Speed = 240.0f;
-	[Export] public int Hp = 30;
+	[Export] public int MaxHp { get; set; } = 100;
+	public int Hp { get; private set; } = 100;
+	public bool IsAlive => Hp > 0;
 	[Export] public PackedScene BulletScene { get; set; } = GD.Load<PackedScene>("res://scenes/bullet.tscn");
 	[Export] public bool UsePooling { get; set; } = true;
 	[Export] public int PoolSize { get; set; } = 50;
@@ -12,10 +14,9 @@ public partial class Player : CharacterBody2D
 	private readonly BulletPool bulletPool = new();
 	private double cooldownTimer = 0.0;
 
-	public bool IsAlive { get; private set; } = true;
-
 	public override void _Ready()
 	{
+		Hp = MaxHp;
 		CallDeferred(nameof(SetupPool));
 	}
 
@@ -26,27 +27,31 @@ public partial class Player : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (!IsAlive) return;
-
-		Vector2 input = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-		if (input == Vector2.Zero)
+		if (!IsAlive)
 		{
-			if (Input.IsPhysicalKeyPressed(Key.A) || Input.IsKeyPressed(Key.Left))
-				input.X -= 1.0f;
-			if (Input.IsPhysicalKeyPressed(Key.D) || Input.IsKeyPressed(Key.Right))
-				input.X += 1.0f;
-			if (Input.IsPhysicalKeyPressed(Key.W) || Input.IsKeyPressed(Key.Up))
-				input.Y -= 1.0f;
-			if (Input.IsPhysicalKeyPressed(Key.S) || Input.IsKeyPressed(Key.Down))
-				input.Y += 1.0f;
-
-			if (input != Vector2.Zero)
-			{
-				input = input.Normalized();
-			}
+			Velocity = Vector2.Zero;
+			return;
 		}
 
-		Velocity = input * Speed;
+		Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+		if (inputDir == Vector2.Zero)
+		{
+			if (Input.IsPhysicalKeyPressed(Key.A) || Input.IsKeyPressed(Key.Left))
+				inputDir.X -= 1.0f;
+			if (Input.IsPhysicalKeyPressed(Key.D) || Input.IsKeyPressed(Key.Right))
+				inputDir.X += 1.0f;
+			if (Input.IsPhysicalKeyPressed(Key.W) || Input.IsKeyPressed(Key.Up))
+				inputDir.Y -= 1.0f;
+			if (Input.IsPhysicalKeyPressed(Key.S) || Input.IsKeyPressed(Key.Down))
+				inputDir.Y += 1.0f;
+		}
+
+		if (inputDir != Vector2.Zero)
+		{
+			inputDir = inputDir.Normalized();
+		}
+
+		Velocity = inputDir * Speed;
 		MoveAndSlide();
 		Vector2 aimDirection = GetGlobalMousePosition() - GlobalPosition;
 		if (aimDirection != Vector2.Zero)
@@ -88,14 +93,19 @@ public partial class Player : CharacterBody2D
 	{
 		if (!IsAlive || amount <= 0) return;
 
-		Hp = Mathf.Max(Hp - amount, 0);
-		GD.Print("Spēlētājs saņēma ", amount, " bojājumus. HP: ", Hp);
+		Hp = Mathf.Max(0, Hp - amount);
+		GD.Print($"[Player] Saņemti -{amount} bojājumi. HP: {Hp}/{MaxHp}");
 
 		if (Hp == 0)
 		{
-			IsAlive = false;
-			GD.Print("Spēlētājs ir miris.");
-			QueueFree();
+			Modulate = new Color(0.4f, 0.4f, 0.4f, 0.7f);
+			GD.Print("[Player] Spēlētājs ir zaudējis visus HP!");
 		}
+	}
+
+	public void Heal(int amount)
+	{
+		if (!IsAlive || amount <= 0) return;
+		Hp = Mathf.Min(MaxHp, Hp + amount);
 	}
 }
