@@ -19,6 +19,7 @@ public partial class Enemy : CharacterBody2D
 	protected EnemyState state = EnemyState.Patrol;
 	protected Node2D player;
 	protected NavigationAgent2D navAgent;
+	private float attackCooldown;
 
 	public bool IsAlive => state != EnemyState.Dead;
 
@@ -71,7 +72,7 @@ public partial class Enemy : CharacterBody2D
 		if (Input.IsKeyPressed(Key.K))
 			TakeDamage(30);
 
-		if (player == null || !IsAlive) return;
+		if (!GodotObject.IsInstanceValid(player) || !IsAlive) return;
 
 		float dist = GlobalPosition.DistanceTo(player.GlobalPosition);
 
@@ -91,6 +92,12 @@ public partial class Enemy : CharacterBody2D
 
 			case EnemyState.Attack:
 				Velocity = Vector2.Zero;
+				attackCooldown -= (float)delta;
+				if (attackCooldown <= 0.0f && player is Player targetPlayer)
+				{
+					targetPlayer.TakeDamage(10);
+					attackCooldown = 1.0f;
+				}
 				if (dist >= 80.0f) ChangeState(EnemyState.Chase);
 				break;
 

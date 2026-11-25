@@ -3,16 +3,52 @@
 [ext_resource type="Script" uid="uid://cde3g31hjhd6e" path="res://scripts/Player.cs" id="1_p0vlq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xvo5p"]
-size = Vector2(28, 28)
+size = Vector2(26.964188, 26.203678)
 
 [node name="Player" type="CharacterBody2D" unique_id=1812156753]
-position = Vector2(27, 24)
+position = Vector2(94, 61)
+rotation = -0.08922035
 motion_mode = 1
 script = ExtResource("1_p0vlq")
 
 [node name="player" type="CollisionShape2D" parent="." unique_id=715711659]
+position = Vector2(-2.437552, 4.8019085)
+rotation = 0.004896647
 shape = SubResource("RectangleShape2D_xvo5p")
 
 [node name="visual" type="Polygon2D" parent="player" unique_id=2093416771]
+position = Vector2(1.9086723, 1.1648936)
+scale = Vector2(0.7936508, 0.75654334)
 color = Color(0.03529412, 0.28235295, 1, 1)
-polygon = PackedVector2Array(-14, -14, 14, -14, 14, 14, -14, 14)
+polygon = PackedVector2Array(-18, -17, -10, -20, 0, -22, 7.9755707, -20.517044, 16.339745, -14.469337, 18, -7, 19, 4, 20, 13, 13.686691, 18.458282, 6, 21, -5, 22, -16.658104, 18.420639, -20.1063, 14.135345, -22, 5, -22, -2, -21, -11)
+
+[node name="visual2" type="Polygon2D" parent="player" unique_id=1959096289]
+position = Vector2(-7.999997, 3.9999976)
+scale = Vector2(1.3749993, 1.3333334)
+color = Color(0.24560112, 0.3396169, 0.658817, 1)
+polygon = PackedVector2Array(17, -4, 23, -4, 25, -1, 23, 2, 17, 2)
+
+[node name="visual3" type="Polygon2D" parent="player" unique_id=1566089891]
+position = Vector2(9, 1.9999976)
+rotation = 3.1801744
+scale = Vector2(1.375, 1.3333334)
+color = Color(0.24705882, 0.34117648, 0.65882355, 1)
+polygon = PackedVector2Array(17, -4, 23, -4, 24.272728, -1, 23, 2, 17, 2)
+
+[node name="visual4" type="Polygon2D" parent="player" unique_id=123649847]
+position = Vector2(9, -21.000004)
+rotation = 3.1801744
+scale = Vector2(1.375, 1.3333334)
+color = Color(0.8862745, 0.73333335, 0.50980395, 1)
+polygon = PackedVector2Array(19.78743, -15.798849, 21.995678, -15.13619, 22.107887, -12.138422, 19.007225, 2.245613, 5.98217, 4.265213, 16.770927, 0.8335171)
+
+[node name="visual5" type="Polygon2D" parent="player" unique_id=1793268747]
+position = Vector2(46.999996, -24.999996)
+rotation = 2.9703088
+scale = Vector2(1.375, 1.3333334)
+color = Color(0.88801444, 0.7318291, 0.51089245, 1)
+polygon = PackedVector2Array(19.085693, -12.5793, 20.17421, -14.668541, 22.324104, -14.285034, 19.844864, 0.49546814, 30.567177, 6.974987, 16.770927, 0.8335171)
+
+[node name="gun" type="Polygon2D" parent="player" unique_id=1392470644]
+color = Color(0.058420584, 0.0584206, 0.058420606, 1)
+polygon = PackedVector2Array(1, -27, 1, -41, 2, -41, 2, -47, 3, -47, 3, -44, 3, -41, 4, -41, 4, -27)
